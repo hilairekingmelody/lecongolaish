@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lecongolaiscd.onrender.com/sitemap.xml
