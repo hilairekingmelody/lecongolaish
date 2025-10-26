@@ -1,0 +1,156 @@
+{
+  "articles": [
+    {
+      "title": "Cancer du sein en RDC : appel à la sensibilisation",
+      "description": "Les femmes congolaises dénoncent le manque de dépistage et de soutien médical.",
+      "url": "https://actualite.cd/sante/cancer-sein-rdc",
+      "image": "images/article1.png",
+      "publishedAt": "2025-10-25T08:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "RDC : Lupopo qualifié en Ligue des Champions",
+      "description": "Le club congolais surmonte Orlando Pirates et poursuit son parcours africain.",
+      "url": "https://actualite.cd/sport/lupopo-caf",
+      "image": "images/article2.jpg",
+      "publishedAt": "2025-10-24T18:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "Mike Tyson révèle ses origines congolaises",
+      "description": "L’ancien champion de boxe affirme avoir des racines en RDC après un test ADN.",
+      "url": "https://jeuneafrique.com/mike-tyson-rdc",
+      "image": "images/article3.jpg",
+      "publishedAt": "2025-10-23T10:00:00Z",
+      "source": { "name": "Jeune Afrique" }
+    },
+    {
+      "title": "Kinshasa célèbre la langue italienne",
+      "description": "La 25e édition de la semaine culturelle italienne se tient du 27 au 31 octobre.",
+      "url": "https://actualite.cd/culture/langue-italienne",
+      "image": "images/article4.jpg",
+      "publishedAt": "2025-10-22T14:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "RDC : 21 millions de personnes en besoin humanitaire",
+      "description": "Oxfam alerte sur la crise humanitaire qui touche un cinquième de la population.",
+      "url": "https://la-croix.com/rdc-humanitaire",
+      "image": "images/article5.jpg",
+      "publishedAt": "2025-10-23T19:00:00Z",
+      "source": { "name": "La Croix" }
+    },
+    {
+      "title": "Saisie de primates à l’aéroport de Kinshasa",
+      "description": "Des singes transportés dans des conditions inhumaines ont été interceptés.",
+      "url": "https://liberation.fr/rdc-primates",
+      "image": "images/article6.jpg",
+      "publishedAt": "2025-10-22T11:00:00Z",
+      "source": { "name": "Libération" }
+    },
+    {
+      "title": "Braquage spectaculaire à Kinshasa",
+      "description": "Une Allemande arrêtée dans des conditions controversées après un vol de Porsche.",
+      "url": "https://rfi.fr/rdc-braquage",
+      "image": "images/article7.jpeg",
+      "publishedAt": "2025-10-21T16:00:00Z",
+      "source": { "name": "RFI" }
+    },
+    {
+      "title": "RDC : le mouvement « Sauvons la RDC » se structure",
+      "description": "Joseph Kabila lance le secrétariat technique de sa nouvelle plateforme politique.",
+      "url": "https://actualite.cd/politique/sauvons-la-rdc",
+      "image": "images/article8.jpg",
+      "publishedAt": "2025-10-24T15:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "Exportation de cobalt : les producteurs attendent",
+      "description": "Le système de quotas bloque toujours les autorisations d’exportation.",
+      "url": "https://zonebourse.com/cobalt-rdc",
+      "image": "images/article9.jpg",
+      "publishedAt": "2025-10-24T13:00:00Z",
+      "source": { "name": "Zonebourse.com" }
+    },
+    {
+      "title": "Épidémie d’Ebola : la RDC proche de la fin",
+      "description": "L’OMS reste prudente malgré la sortie du dernier patient à Bulape.",
+      "url": "https://rfi.fr/ebola-rdc",
+      "image": "images/article10.jpg",
+      "publishedAt": "2025-10-24T09:00:00Z",
+      "source": { "name": "RFI" }
+    },
+    {
+      "title": "RDC-Rwanda : discussions à Washington",
+      "description": "Les deux pays entament un dialogue diplomatique sous médiation américaine.",
+      "url": "https://jeuneafrique.com/rdc-rwanda-washington",
+      "image": "images/article11.jpg",
+      "publishedAt": "2025-10-25T12:00:00Z",
+      "source": { "name": "Jeune Afrique" }
+    },
+    {
+      "title": "Maniema Union qualifié en CAF-C2",
+      "description": "Le club congolais ramène sa qualification en déplacement comme promis.",
+      "url": "https://actualite.cd/sport/maniema-union",
+      "image": "images/article12.jpg",
+      "publishedAt": "2025-10-23T17:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "UK Export Finance investit en RDC",
+      "description": "500 millions de livres sterling garantis pour les investisseurs britanniques.",
+      "url": "https://actualite.cd/economie/uk-export-finance",
+      "image": "images/article13.jpg",
+      "publishedAt": "2025-10-22T10:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "Seth Kikuni conteste Tshisekedi",
+      "description": "Le porte-parole de « Sauvons la RDC » appelle à la désobéissance civile.",
+      "url": "https://jeuneafrique.com/seth-kikuni-rdc",
+      "image": "images/article14.jpg",
+      "publishedAt": "2025-10-23T14:00:00Z",
+      "source": { "name": "Jeune Afrique" }
+    },
+    {
+      "title": "Walikale : appel à l’assistance humanitaire",
+      "description": "La société civile locale demande une aide urgente pour les déplacés.",
+      "url": "https://actualite.cd/walikale-assistance",
+      "image": "images/article15.jpg",
+      "publishedAt": "2025-10-22T13:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "Lubero : tensions autour d’une arrestation",
+      "description": "La société civile menace de paralyser les activités après l’arrestation d’un leader.",
+      "url": "https://actualite.cd/lubero-arrestation",
+      "image": "images/article16.jpg",
+      "publishedAt": "2025-10-21T11:00:00Z",
+      "source": { "name": "Actualite.cd" }
+    },
+    {
+      "title": "Kinshasa : mesures contre les braquages",
+      "description": "Radio Okapi propose des stratégies de prévention pour les zones sensibles.",
+      "url": "https://radiookapi.net/securite-kinshasa",
+      "image": "images/article17.jpg",
+      "publishedAt": "2025-10-22T22:00:00Z",
+      "source": { "name": "Radio Okapi" }
+    },
+    {
+      "title": "Affaire Porsche : le chef refuse la honte",
+      "description": "Le scandale autour du vol de Porsche continue de secouer Kinshasa.",
+      "url": "https://ouragan.cd/porsche-rdc",
+      "image": "images/article18.jpg",
+      "publishedAt": "2025-10-25T08:00:00Z",
+      "source": { "name": "Ouragan.cd" }
+    },
+    {
+      "title": "RDC : vers une réforme du secteur minier artisanal",
+      "description": "Le gouvernement lance une consultation pour encadrer les exploitations artisanales.",
+      "url": "https://actualite.cd/economie/mines-artisanales",
+      "image": "images/article19.jpg",
+      "publishedAt": "2025-10-26T09:00:00Z",
+      "source": { "name": "Actualite.cd" }
+     }
+ ]
+  }
