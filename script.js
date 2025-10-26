@@ -45,3 +45,26 @@ function afficherArticles(articles) {
 document.getElementById("toggle-theme").onclick = () => {
   document.body.classList.toggle("dark");
 };
+
+fetch(endpoint)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Erreur API : ${response.status} ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.articles && data.articles.length > 0) {
+      afficherArticles(data.articles);
+    } else {
+      document.getElementById("articles").innerHTML = `
+        <p style="color: orange;">Aucune actualité disponible pour le moment. Les données sont mises à jour toutes les 12 heures sur le plan gratuit.</p>
+      `;
+    }
+  })
+  .catch(error => {
+    console.error("Erreur lors de la récupération :", error);
+    document.getElementById("articles").innerHTML = `
+      <p style="color: red;">Impossible de charger les actualités. ${error.message}</p>
+    `;
+  });
