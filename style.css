@@ -13,12 +13,61 @@ header {
   text-align: center;
 }
 
+.ads {
+  margin: 30px 0;
+  text-align: center;
+}
+
+
 main {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+#contact, #support {
+  background-color: #f9f9f9;
+  padding: 30px;
+  margin: 40px 0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.contact-btn, .support-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 24px;
+  background-color: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.contact-btn:hover, .support-btn:hover {
+  background-color: #005fa3;
+}
+#ebooks {
+  background-color: #f0f8ff;
+  padding: 30px;
+  text-align: center;
+  border-radius: 8px;
+  margin: 40px 0;
+}
+
+.ebook-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.ebook-btn:hover {
+  background-color: #218838;
+}
+
 
 footer {
   background-color: #eee;
