@@ -1,5 +1,7 @@
 let articles = [];
-let visibleCount = 10;
+let visibleCount = 6; // nombre d’articles affichés au départ
+const step = 6;       // nombre d’articles à ajouter à chaque clic
+
 
 // 🔧 Nettoyer le HTML
 function stripHTML(html) {
@@ -61,19 +63,25 @@ function displayArticles() {
   toDisplay.forEach(article => {
     const div = document.createElement('div');
     div.className = 'article';
-  div.innerHTML = `
-  <img src="${article.image}" alt="${article.title}">
-  <h2>${article.title}</h2>
-  <p>${article.description}</p>
-  <a href="${article.url}" target="_blank">Lire plus</a>
-  <small>Source : ${article.source.name}</small>
-
-  <div class="copy-link">
-    <button onclick="copyToClipboard('${article.url}')">🔗 Copier le lien</button>
-  </div>
-`;
+    div.innerHTML = `
+      <img src="${article.image}" alt="${article.title}">
+      <h2>${article.title}</h2>
+      <p>${article.description}</p>
+      <a href="${article.url}" target="_blank">Lire plus</a>
+      <small>Source : ${article.source.name}</small>
+      <div class="copy-link">
+        <button onclick="copyToClipboard('${article.url}')">🔗 Copier le lien</button>
+      </div>
+    `;
     container.appendChild(div);
   });
+
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (visibleCount >= articles.length) {
+    loadMoreBtn.style.display = 'none';
+  } else {
+    loadMoreBtn.style.display = 'inline-block';
+  }
 }
 
 // 🔍 Barre de recherche
@@ -131,8 +139,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const localArticles = await fetchLocalArticles();
   const actualiteArticles = await fetchActualiteArticles();
   articles = [...localArticles, ...actualiteArticles];
+
+  console.log("Articles chargés :", articles); // ✅ vérifie ici
+
   displayArticles();
   setupSearch();
+  setupArticleForm();
+
+ document.getElementById('loadMoreBtn').addEventListener('click', () => {
+  visibleCount += step;
+  displayArticles();
+});
 });
 
 function copyToClipboard(text) {

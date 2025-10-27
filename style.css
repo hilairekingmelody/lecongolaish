@@ -11,12 +11,12 @@ header {
   background-image: url(logo.jpg);
   background-position: center;
   color: rgb(26, 173, 104);
-  padding: 20px;
   text-align: center;
+  padding: 20px;
 }
 
 .ads {
-  margin: 50px 0;
+  margin: 20px 0;
   text-align: center;
 }
 
@@ -113,8 +113,6 @@ button:hover {
 #articlesContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
   width: 100%;
   max-width: 1200px;
 }
@@ -301,3 +299,19 @@ button {
 .copy-link button:hover {
   background-color: #ddd;
 }
+#loadMoreBtn {
+  display: inline-block; /* ✅ visible par défaut */
+  padding: 12px 24px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#loadMoreBtn:hover {
+  background-color: #005fa3;
+}
+
