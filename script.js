@@ -127,12 +127,12 @@ function setupSearch() {
 }
 
 // 🔄 Scroll infini
-window.addEventListener('scroll', () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    visibleCount += 5;
-    displayArticles();
-  }
-});
+//window.addEventListener('scroll', () => {
+//if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+//visibleCount += 5;
+//displayArticles();
+//}
+//});
 
 // 🚀 Initialisation
 document.addEventListener('DOMContentLoaded', async () => {
