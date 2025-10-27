@@ -1,121 +1,118 @@
-// 🔑 Clé API GNews
-const apiKey = "303c134551af698a9165e9a6bff6bcb1";
-
-// Fonction principale pour charger les articles depuis articles.json
-fetch("articles.json")
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`Erreur de chargement : ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    afficherArticles(data.articles);
-  })
-  .catch(error => {
-    console.error("Erreur lors du chargement des articles :", error);
-    document.getElementById("articles").innerHTML = `
-      <p style="color: red;">Impossible de charger les articles. Vérifiez le fichier articles.json.</p>
-    `;
-  });
-
-function afficherArticles(articles) {
-  const container = document.getElementById("articles");
-  container.innerHTML = "";
-
-  if (!articles || articles.length === 0) {
-    container.innerHTML = "<p>Aucune actualité trouvée pour le moment.</p>";
-    return;
-  }
-
-  articles.forEach(article => {
-    const card = document.createElement("div");
-    card.className = "article-card";
-
-    card.innerHTML = `
-      <img src="${article.image}" alt="${article.title}">
-      <h3>${article.title}</h3>
-      <p>${article.description}</p>
-      <a href="${article.url}" target="_blank">Lire plus</a>
-      <small>Source : ${article.source.name}</small>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
 let articles = [];
-
-(async () => {
-  const apiArticles = await fetchArticlesFromAPI();
-  articles = [...manualArticles, ...apiArticles];
-  displayArticles();
-})();
- // Tous les articles (API + manuels)
 let visibleCount = 10;
 
-// 🔗 Charger les articles depuis l’API
-async function fetchArticlesFromAPI() {
-  try {
-    const response = await fetch('https://api.exemple.com/articles'); // remplace par ton vrai lien
-    const data = await response.json();
-    return data.articles;
-  } catch (error) {
-    console.error('Erreur API :', error);
-    return [];
-  }
-}
-
-// 📝 Articles ajoutés manuellement
-const manualArticles = [
-  { title: "Santé féminine en RDC", content: "Les défis et les solutions locales..." },
-  { title: "Éducation rurale", content: "Les écoles communautaires en action..." },
-  // Ajoute ici tes articles manuels
-];
-
-// 🧩 Afficher les articles
+// 🔧 Nettoyer le HTML
 function stripHTML(html) {
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
   return tempDiv.textContent || tempDiv.innerText || '';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// 🔗 Charger les articles depuis Actualite.CD
+async function fetchActualiteArticles() {
+  try {
+    const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://actualite.cd/rss.xml');
+    const data = await response.json();
+
+    if (!data.items || !Array.isArray(data.items)) return [];
+
+    return data.items.map(item => ({
+      title: item.title,
+      description: stripHTML(item.description),
+      url: item.link,
+      image: extractImageFromHTML(item.description), // ✅ extrait l’image depuis le HTML
+      source: { name: "Actualite.cd" }
+    }));
+  } catch (error) {
+    console.error("Erreur Actualite.CD :", error);
+    return [];
+  }
+}
+function extractImageFromHTML(html) {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  const img = tempDiv.querySelector('img');
+  return img ? img.src : 'images/default.jpg';
+}
+
+// 🔗 Charger tes articles depuis articles.json
+async function fetchLocalArticles() {
+  try {
+    const response = await fetch('articles.json');
+    const data = await response.json();
+    return data.articles || [];
+  } catch (error) {
+    console.error("Erreur articles.json :", error);
+    return [];
+  }
+}
+
+// 🧩 Afficher les articles
+function displayArticles() {
+  const container = document.getElementById('articlesContainer');
+  container.innerHTML = '';
+
+  const toDisplay = articles.slice(0, visibleCount);
+  if (toDisplay.length === 0) {
+    container.innerHTML = '<p>Aucun article à afficher.</p>';
+    return;
+  }
+
+  toDisplay.forEach(article => {
+    const div = document.createElement('div');
+    div.className = 'article';
+    div.innerHTML = `
+      <img src="${article.image}" alt="${article.title}">
+      <h2>${article.title}</h2>
+      <p>${article.description}</p>
+      <a href="${article.url}" target="_blank">Lire plus</a>
+      <small>Source : ${article.source.name}</small>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// 🔍 Barre de recherche
+function setupSearch() {
   const searchForm = document.getElementById('searchForm');
   const searchInput = document.getElementById('searchInput');
-  const articlesContainer = document.getElementById('articlesContainer');
+  const container = document.getElementById('articlesContainer');
 
   searchForm.addEventListener('submit', function(e) {
     e.preventDefault();
-
     const query = searchInput.value.trim().toLowerCase();
 
     if (query === '') {
-      displayArticles(); // Réaffiche tous les articles si la recherche est vide
+      visibleCount = 10;
+      displayArticles();
       return;
     }
 
-    const filteredArticles = articles.filter(article => {
-      const cleanTitle = stripHTML(article.title).toLowerCase();
-      const cleanContent = stripHTML(article.content).toLowerCase();
-      return cleanTitle.includes(query) || cleanContent.includes(query);
-    });
+    const filtered = articles.filter(article =>
+      article.title.toLowerCase().includes(query) ||
+      article.description.toLowerCase().includes(query)
+    );
 
-    articlesContainer.innerHTML = '';
+    container.innerHTML = '';
 
-    if (filteredArticles.length === 0) {
-      articlesContainer.innerHTML = '<p>Aucun article trouvé.</p>';
+    if (filtered.length === 0) {
+      container.innerHTML = '<p>Aucun article trouvé.</p>';
     } else {
-      filteredArticles.forEach(article => {
+      filtered.forEach(article => {
         const div = document.createElement('div');
         div.className = 'article';
-        div.innerHTML = `<h2>${article.title}</h2><p>${article.content}</p>`;
-        articlesContainer.appendChild(div);
+        div.innerHTML = `
+          <img src="${article.image}" alt="${article.title}">
+          <h2>${article.title}</h2>
+          <p>${article.description}</p>
+          <a href="${article.url}" target="_blank">Lire plus</a>
+          <small>Source : ${article.source.name}</small>
+        `;
+        container.appendChild(div);
       });
     }
   });
-});
-
+}
 
 // 🔄 Scroll infini
 window.addEventListener('scroll', () => {
@@ -126,8 +123,10 @@ window.addEventListener('scroll', () => {
 });
 
 // 🚀 Initialisation
-(async () => {
-  const apiArticles = await fetchArticlesFromAPI();
-  articles = [...manualArticles, ...apiArticles];
+document.addEventListener('DOMContentLoaded', async () => {
+  const localArticles = await fetchLocalArticles();
+  const actualiteArticles = await fetchActualiteArticles();
+  articles = [...localArticles, ...actualiteArticles];
   displayArticles();
-})();
+  setupSearch();
+});
