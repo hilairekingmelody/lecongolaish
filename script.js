@@ -1,6 +1,6 @@
 let articles = [];
 let isSearching = false;
-let visibleCount = 6; // nombre d’articles affichés au départ
+let visibleCount = Infinity; // ✅ affiche tous les articles
 const step = 6;       // nombre d’articles à ajouter à chaque clic
 
 
