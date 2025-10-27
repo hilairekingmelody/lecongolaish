@@ -1,3 +1,4 @@
+/* 🌍 Structure globale */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -7,7 +8,8 @@ body {
 }
 
 header {
-  background-image:url(logo.png);
+  background-image: url(logo.jpg);
+  background-position: center;
   color: rgb(26, 173, 104);
   padding: 20px;
   text-align: center;
@@ -18,13 +20,15 @@ header {
   text-align: center;
 }
 
-
+/* 📦 Contenu principal */
 main {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
+/* 📬 Sections contact et support */
 #contact, #support {
   background-color: #f9f9f9;
   padding: 30px;
@@ -47,6 +51,8 @@ main {
 .contact-btn:hover, .support-btn:hover {
   background-color: #005fa3;
 }
+
+/* 📚 Section ebooks */
 #ebooks {
   background-color: #f0f8ff;
   padding: 30px;
@@ -64,11 +70,12 @@ main {
   border-radius: 5px;
   font-weight: bold;
 }
+
 .ebook-btn:hover {
   background-color: #218838;
 }
 
-
+/* 🔻 Pied de page */
 footer {
   background-color: #eee;
   text-align: center;
@@ -76,6 +83,96 @@ footer {
   font-size: 0.9em;
 }
 
+/* 🧩 Barre de recherche */
+form {
+  margin-top: 10px;
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 60%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #ffca28;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #ffc107;
+}
+
+/* 📰 Conteneur des articles */
+#articlesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* 🧱 Carte d’article */
+.article {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.article:hover {
+  transform: scale(1.02);
+}
+
+.article img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.article h2 {
+  font-size: 1.2rem;
+  margin: 15px;
+  color: #333;
+}
+
+.article p {
+  margin: 0 15px 10px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.article a {
+  display: inline-block;
+  margin: 0 15px 10px;
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.article a:hover {
+  text-decoration: underline;
+}
+
+.article small {
+  display: block;
+  margin: 0 15px 15px;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* 🧠 Cartes manuelles (si utilisées ailleurs) */
 .article-card {
   background-color: white;
   border: 1px solid #ddd;
@@ -112,34 +209,95 @@ footer {
   margin-top: 8px;
   color: #666;
 }
+
+/* 📱 Responsive */
 @media screen and (max-width: 768px) {
   body {
     font-size: 16px;
+    padding: 0 10px;
   }
-}
+
+  header {
+    padding: 15px;
+    background-size: contain;
+  }
+
+  #articlesContainer {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .article img {
+    height: auto;
+  }
+
+  .article h2 {
+    font-size: 1.1rem;
+    margin: 10px;
+  }
+
+  .article p {
+    font-size: 0.9rem;
+    margin: 0 10px 10px;
+  }
+
+  .article a {
+    margin: 0 10px 10px;
+  }
+
+  .article small {
+    margin: 0 10px 10px;
+  }
+
+  #articleForm {
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  textarea {
+    font-size: 1rem;
+  }
+
 form {
-  margin-top: 10px;
-}
-input[type="text"]
-{
-  padding: 10px;
-  width: 60%;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-button {
-  padding: 10px;
-  border: none;
-  background-color: #ffca28;
-  border-radius: 5px;
-  cursor: pointer;
-}
-#articlesContainer
-{
-  padding: 20px;
-}
-.article {
-  border-bottom: 1px solid #ddd;
-  padding: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
+input[type="text"] {
+  flex: 1 1 60%;
+  min-width: 200px;
+}
+
+button {
+  flex: 1 1 30%;
+  min-width: 100px;
+}
+
+
+  #articlesContainer {
+    grid-template-columns: 1fr;
+  }
+}
+.copy-link {
+  margin: 10px 15px 15px;
+  text-align: left;
+}
+
+.copy-link button {
+  background-color: #4b48fd;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.copy-link button:hover {
+  background-color: #ddd;
+}

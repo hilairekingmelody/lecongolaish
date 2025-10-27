@@ -61,13 +61,17 @@ function displayArticles() {
   toDisplay.forEach(article => {
     const div = document.createElement('div');
     div.className = 'article';
-    div.innerHTML = `
-      <img src="${article.image}" alt="${article.title}">
-      <h2>${article.title}</h2>
-      <p>${article.description}</p>
-      <a href="${article.url}" target="_blank">Lire plus</a>
-      <small>Source : ${article.source.name}</small>
-    `;
+  div.innerHTML = `
+  <img src="${article.image}" alt="${article.title}">
+  <h2>${article.title}</h2>
+  <p>${article.description}</p>
+  <a href="${article.url}" target="_blank">Lire plus</a>
+  <small>Source : ${article.source.name}</small>
+
+  <div class="copy-link">
+    <button onclick="copyToClipboard('${article.url}')">🔗 Copier le lien</button>
+  </div>
+`;
     container.appendChild(div);
   });
 }
@@ -130,3 +134,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   displayArticles();
   setupSearch();
 });
+
+function copyToClipboard(text) {
+  if (!navigator.clipboard) {
+    // Fallback pour anciens navigateurs
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    alert("Lien copié !");
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Lien copié !");
+    }).catch(err => {
+      console.error("Erreur de copie :", err);
+      alert("Impossible de copier le lien.");
+    });
+  }
+}
+
