@@ -1,4 +1,5 @@
 let articles = [];
+let isSearching = false;
 let visibleCount = 6; // nombre d’articles affichés au départ
 const step = 6;       // nombre d’articles à ajouter à chaque clic
 
@@ -76,12 +77,12 @@ function displayArticles() {
     container.appendChild(div);
   });
 
-  const loadMoreBtn = document.getElementById('loadMoreBtn');
-  if (visibleCount >= articles.length) {
-    loadMoreBtn.style.display = 'none';
-  } else {
-    loadMoreBtn.style.display = 'inline-block';
-  }
+ const loadMoreBtn = document.getElementById('loadMoreBtn');
+if (isSearching || visibleCount >= articles.length) {
+  loadMoreBtn.style.display = 'none';
+} else {
+  loadMoreBtn.style.display = 'inline-block';
+}
 }
 
 // 🔍 Barre de recherche
@@ -95,11 +96,13 @@ function setupSearch() {
     const query = searchInput.value.trim().toLowerCase();
 
     if (query === '') {
-      visibleCount = 10;
+      isSearching = false;
+      visibleCount = 6;
       displayArticles();
       return;
     }
 
+    isSearching = true;
     const filtered = articles.filter(article =>
       article.title.toLowerCase().includes(query) ||
       article.description.toLowerCase().includes(query)
@@ -123,6 +126,9 @@ function setupSearch() {
         container.appendChild(div);
       });
     }
+
+    // ✅ Cacher le bouton "Voir plus" pendant la recherche
+    document.getElementById('loadMoreBtn').style.display = 'none';
   });
 }
 
@@ -146,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupSearch();
   setupArticleForm();
 
- document.getElementById('loadMoreBtn').addEventListener('click', () => {
+document.getElementById('loadMoreBtn').addEventListener('click', () => {
   visibleCount += step;
   displayArticles();
 });
