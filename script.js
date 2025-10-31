@@ -68,7 +68,6 @@ function displayArticles() {
       <img src="${article.image}" alt="${article.title}">
       <h2>${article.title}</h2>
       <p>${article.description}</p>
-      <a href="${article.url}" target="_blank">Lire plus</a>
       <small>Source : ${article.source.name}</small>
       <div class="copy-link">
         <button onclick="copyToClipboard('${article.url}')">🔗 Copier le lien</button>
