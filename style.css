@@ -12,12 +12,12 @@ header {
   background-position: center;
   color: rgb(26, 173, 104);
   text-align: center;
-  padding: 20px;
+  padding: 30px;
 }
 
 .ads {
-  margin: 20px 0;
   text-align: center;
+  background-color: #333;
 }
 
 /* 📦 Contenu principal */
@@ -58,7 +58,6 @@ main {
   padding: 30px;
   text-align: center;
   border-radius: 8px;
-  margin: 40px 0;
 }
 
 .ebook-btn {
@@ -79,7 +78,6 @@ main {
 footer {
   background-color: #eee;
   text-align: center;
-  padding: 10px;
   font-size: 0.9em;
 }
 
