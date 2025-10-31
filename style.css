@@ -2,7 +2,6 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
   background-color: #f9f9f9;
   color: #333;
 }
@@ -12,12 +11,13 @@ header {
   background-position: center;
   color: rgb(26, 173, 104);
   text-align: center;
-  padding: 30px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .ads {
   text-align: center;
-  background-color: #333;
+ height: 5px;
 }
 
 /* 📦 Contenu principal */
@@ -30,18 +30,18 @@ main {
 
 /* 📬 Sections contact et support */
 #contact, #support {
-  background-color: #f9f9f9;
+  margin: 20px 0;
+  background-color: #f0f8ff;
   padding: 30px;
-  margin: 40px 0;
-  border-radius: 8px;
   text-align: center;
+  border-radius: 8px;
 }
 
 .contact-btn, .support-btn {
   display: inline-block;
   margin-top: 15px;
   padding: 12px 24px;
-  background-color: #0077cc;
+  background-color: #28a745;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -49,7 +49,7 @@ main {
 }
 
 .contact-btn:hover, .support-btn:hover {
-  background-color: #005fa3;
+  background-color: #28a745;
 }
 
 /* 📚 Section ebooks */
@@ -117,6 +117,7 @@ button:hover {
 
 /* 🧱 Carte d’article */
 .article {
+  padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -270,9 +271,8 @@ input[type="text"] {
 
 button {
   flex: 1 1 30%;
-  min-width: 100px;
+  padding: 10px;
 }
-
 
   #articlesContainer {
     grid-template-columns: 1fr;
