@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publier un article – Le Congolais CD</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea, button {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .note {
+      font-size: 0.9em;
+      color: #666;
+      text-align: center;
+    }
+
+    .ads {
+  margin: 30px auto;
+  max-width: 100%;
+  padding: 10px;
+  background: #f0f4f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.adsbygoogle {
+  display: block;
+  margin: auto;
+  min-height: 100px;
+}
+
+/* Responsive adaptation */
+@media screen and (max-width: 600px) {
+  .ads {
+    padding: 8px;
+    margin: 20px 10px;
+  }
+
+  .adsbygoogle {
+    min-height: 80px;
+  }
+}
+
+    @media screen and (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      form {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1></h1><a href="index.html">☰</a></h1>
+  <h1>📝 Publier un article</h1>
+
+  <form id="articleForm">
+    <input type="text" id="title" placeholder="Titre de l’article" required>
+    <textarea id="description" placeholder="Description de l’article" rows="4" required></textarea>
+    <input type="url" id="url" placeholder="Lien vers l’article (ex: https://...)" required>
+    <input type="file" id="imageFile" accept="image/*">
+    <button type="submit">Publier</button>
+    <p class="note">📷 Vous pouvez soit coller un lien d’image, soit choisir une image locale.</p>
+  </form>
+     <section class="ads">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-3301506304781404"
+           data-ad-slot="7940674587"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </section>
+  <script>
+    document.getElementById('articleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const url = document.getElementById('url').value.trim();
+    const imageUrl = ""; // ou laisse vide si tu n’utilises pas de champ pour coller un lien
+      const imageFile = document.getElementById('imageFile').files[0];
+
+      if (!title || !description || !url) {
+        alert("Veuillez remplir tous les champs obligatoires.");
+        return;
+      }
+
+      // Fonction pour envoyer l’article
+      const sendArticle = async (imageData) => {
+        const article = {
+          title,
+          description,
+          url,
+          image: imageData || imageUrl || "https://via.placeholder.com/300x180",
+          source: "Le Congolais CD"
+        };
+
+        try {
+          const res = await fetch('http://localhost:3000/articles', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(article)
+          });
+
+          const data = await res.json();
+          alert("✅ Article publié !");
+          document.getElementById('articleForm').reset();
+        } catch (error) {
+          console.error("Erreur de publication :", error);
+          alert("❌ Impossible de publier l’article.");
+        }
+      };
+
+      // Si une image locale est sélectionnée
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = () => sendArticle(reader.result);
+        reader.readAsDataURL(imageFile);
+      } else {
+        sendArticle(null);
+      }
+    });
+  </script>
+
+</body>
+</html>
