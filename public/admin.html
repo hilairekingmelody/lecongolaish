@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Publier un article – Le Congolais CD</title>
@@ -9,7 +10,12 @@
     * {
       box-sizing: border-box;
     }
-
+    @media (max-width: 600px) {
+  .carte {
+    width: 100%;
+    font-size: 16px;
+  }
+}
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -114,6 +120,7 @@
     <textarea id="description" placeholder="Description de l’article" rows="4" required></textarea>
     <input type="url" id="url" placeholder="Lien vers l’article (ex: https://...)" required>
     <input type="file" id="imageFile" accept="image/*">
+    <input name="key" placeholder="Clé admin" required>
     <button type="submit">Publier</button>
     <p class="note">📷 Vous pouvez soit coller un lien d’image, soit choisir une image locale.</p>
   </form>
@@ -126,57 +133,60 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </section>
-  <script>
-    document.getElementById('articleForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+ <script>
+  document.getElementById('articleForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
-      const url = document.getElementById('url').value.trim();
-    const imageUrl = ""; // ou laisse vide si tu n’utilises pas de champ pour coller un lien
-      const imageFile = document.getElementById('imageFile').files[0];
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const url = document.getElementById('url').value.trim();
+    const key = document.getElementById('key').value.trim();
+    const imageFile = document.getElementById('imageFile').files[0];
 
-      if (!title || !description || !url) {
-        alert("Veuillez remplir tous les champs obligatoires.");
-        return;
-      }
+    if (!title || !description || !url || !key) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
 
-      // Fonction pour envoyer l’article
-      const sendArticle = async (imageData) => {
-        const article = {
-          title,
-          description,
-          url,
-          image: imageData || imageUrl || "https://via.placeholder.com/300x180",
-          source: "Le Congolais CD"
-        };
-
-        try {
-          const res = await fetch('http://localhost:3000/articles', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(article)
-          });
-
-          const data = await res.json();
-          alert("✅ Article publié !");
-          document.getElementById('articleForm').reset();
-        } catch (error) {
-          console.error("Erreur de publication :", error);
-          alert("❌ Impossible de publier l’article.");
-        }
+    const sendArticle = async (imageData) => {
+      const article = {
+        title,
+        description,
+        url,
+        image: imageData || "https://via.placeholder.com/300x180",
+        source: "Le Congolais CD",
+        key
       };
 
-      // Si une image locale est sélectionnée
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = () => sendArticle(reader.result);
-        reader.readAsDataURL(imageFile);
-      } else {
-        sendArticle(null);
+      try {
+        const res = await fetch(window.location.origin + '/articles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(article)
+        });
+
+        if (res.ok) {
+          alert("✅ Article publié !");
+          document.getElementById('articleForm').reset();
+        } else {
+          const err = await res.json();
+          alert("❌ Erreur : " + (err.error || "Publication échouée."));
+        }
+      } catch (error) {
+        console.error("Erreur de publication :", error);
+        alert("❌ Impossible de publier l’article.");
       }
-    });
-  </script>
+    };
+
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onload = () => sendArticle(reader.result);
+      reader.readAsDataURL(imageFile);
+    } else {
+      sendArticle(null);
+    }
+  });
+</script>
 
 </body>
 </html>
