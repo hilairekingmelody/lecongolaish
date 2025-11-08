@@ -140,11 +140,19 @@
     const title = document.getElementById('title').value.trim();
     const description = document.getElementById('description').value.trim();
     const url = document.getElementById('url').value.trim();
-    const key = document.getElementById('key').value.trim();
+    const keyInput = document.getElementById('key');
+    const key = keyInput ? keyInput.value.trim() : '';
     const imageFile = document.getElementById('imageFile').files[0];
+
+    console.log("📱 Données capturées :", { title, description, url, key, imageFile });
 
     if (!title || !description || !url || !key) {
       alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
+    if (imageFile && imageFile.size > 2 * 1024 * 1024) {
+      alert("📷 Image trop lourde (max 2MB).");
       return;
     }
 
@@ -173,20 +181,31 @@
           alert("❌ Erreur : " + (err.error || "Publication échouée."));
         }
       } catch (error) {
-        console.error("Erreur de publication :", error);
+        console.error("❌ Erreur JS :", error);
         alert("❌ Impossible de publier l’article.");
       }
     };
 
     if (imageFile) {
-      const reader = new FileReader();
-      reader.onload = () => sendArticle(reader.result);
-      reader.readAsDataURL(imageFile);
+      try {
+        const reader = new FileReader();
+        reader.onload = () => {
+          console.log("📷 Image encodée");
+          sendArticle(reader.result);
+        };
+        reader.onerror = () => {
+          console.error("❌ Erreur lecture image");
+          sendArticle(null);
+        };
+        reader.readAsDataURL(imageFile);
+      } catch (err) {
+        console.error("❌ Erreur FileReader :", err);
+        sendArticle(null);
+      }
     } else {
       sendArticle(null);
     }
   });
 </script>
-
 </body>
 </html>
