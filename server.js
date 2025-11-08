@@ -30,6 +30,14 @@ function saveArticles() {
 
 // Routes
 app.get('/articles', (req, res) => {
+  try {
+    const raw = fs.readFileSync(filePath);
+    articles = JSON.parse(raw);
+  } catch (err) {
+    console.error("❌ Erreur lecture fichier :", err);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+
   const { q, limit } = req.query;
   let filtered = articles;
 
