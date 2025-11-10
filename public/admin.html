@@ -41,83 +41,75 @@
   <h2>📝 Publier un article</h2>
    
   <a href="dashboard.html">Accueil</a>
-  <form id="articleForm">
-    <input type="text" name="title" placeholder="Titre de l'article" required>
-    <textarea name="description" placeholder="Description" required></textarea>
-    <input type="text" name="url" placeholder="Lien (facultatif)">
-    
-    <select name="category" required>
-      <option value="Congo">Congo</option>
-      <option value="Politique">Politique</option>
-      <option value="Économie">Économie</option>
-      <option value="Culture">Culture</option>
-      <option value="Monde">Monde</option>
-    </select>
+<input type="file" id="image" />
+<input type="text" id="title" />
+<textarea id="description"></textarea>
+<select id="category">
+  <option value="Congo">Congo</option>
+  <option value="Politique">Politique</option>
+  <option value="Économie">Économie</option>
+  <option value="Culture">Culture</option>
+  <option value="Monde">Monde</option>
+</select>
+<button onclick="publierArticle()">Publier</button>
 
-    <input type="file" name="image" accept="image/*" required>
-    <button type="submit">📤 Publier</button>
-  </form>
+<script>
+async function publierArticle() {
+  try {
+    const imageFile = document.querySelector('#image').files[0];
+    const title = document.querySelector('#title').value.trim();
+    const description = document.querySelector('#description').value.trim();
+    const category = document.querySelector('#category').value;
 
-  <script>
-    const CLOUD_NAME = 'lecongolaish';
-    const UPLOAD_PRESET = 'lecongolaish';
+    if (!imageFile || !title || !description || !category) {
+      alert("⛔ Tous les champs sont obligatoires !");
+      return;
+    }
 
-    document.getElementById('articleForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const imageFile = form.image.files[0];
+    // Upload vers Cloudinary
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', 'lecongolaish');
+    formData.append('folder', 'articles');
 
-      if (!imageFile) {
-        alert("❌ Veuillez sélectionner une image");
-        return;
-      }
-
-      // 🔼 Upload image vers Cloudinary
-  const formData = new FormData();
-formData.append('file', imageFile);
-formData.append('upload_preset', 'lecongolaish');
-formData.append('folder', 'articles');
-
-fetch('https://api.cloudinary.com/v1_1/dkglpx7jh/image/upload', {
-  method: 'POST',
-  body: formData
-})
-.then(res => res.json())
-.then(data => {
-  console.log("✅ Image URL :", data.secure_url);
-})
-.catch(err => {
-  console.error("❌ Erreur Cloudinary :", err);
-});
-
-
-      // 📝 Publier l’article vers ton backend
-      const article = {
-        title: form.title.value,
-        description: form.description.value,
-        url: form.url.value,
-        category: form.category.value,
-        image: cloudData.secure_url
-      };
-
-      const res = await fetch('/articles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-key': 'congolais2025'
-        },
-        body: JSON.stringify(article)
-      });
-
-      if (res.ok) {
-        alert("✅ Article publié !");
-        form.reset();
-      } else {
-        alert("❌ Erreur lors de la publication");
-      }
+    const cloudRes = await fetch('https://api.cloudinary.com/v1_1/dkglpx7jh/image/upload', {
+      method: 'POST',
+      body: formData
     });
-  </script>
 
+    const cloudData = await cloudRes.json();
+    if (!cloudData.secure_url) {
+      alert("❌ Échec de l’upload Cloudinary");
+      console.error(cloudData);
+      return;
+    }
+
+    const imageUrl = cloudData.secure_url;
+
+    // Publication vers ton backend
+    const article = { title, description, category, image: imageUrl };
+
+    const res = await fetch('/articles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': 'congolais2025'
+      },
+      body: JSON.stringify(article)
+    });
+
+    if (res.ok) {
+      alert("✅ Article publié avec succès !");
+    } else {
+      alert("❌ Échec de la publication");
+      console.error(await res.text());
+    }
+  } catch (err) {
+    console.error("❌ Erreur générale :", err);
+    alert("❌ Une erreur est survenue");
+  }
+}
+</script>
 </body>
 </html>
 
