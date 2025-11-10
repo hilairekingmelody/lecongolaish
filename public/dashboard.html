@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+  <style>
+    /*Dashboard*/
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+.article-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.article-card img {
+  max-width: 100%;
+  height: auto;
+}
+button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+  </style>
+
+</head>
+<body>
+  <script>
+    const adminKey = prompt("🔐 Entrez la clé admin");
+    if (adminKey !== "congolais2025") {
+      alert("⛔ Accès refusé");
+      window.location.href = "/";
+    }
+  </script>
+  
+  <h2>📋 Articles publiés</h2>
+  <a href="dashboard.html">Accueil</a>
+  <select id="categoryFilter">
+    <option value="">Toutes les catégories</option>
+    <option value="Congo">Congo</option>
+    <option value="Politique">Politique</option>
+    <option value="Économie">Économie</option>
+    <option value="Culture">Culture</option>
+    <option value="Monde">Monde</option>
+  </select>
+
+  <div id="articlesContainer"></div>
+
+  <script>
+    async function fetchArticles() {
+      const res = await fetch('/articles');
+      const data = await res.json();
+      displayArticles(data);
+    }
+
+    function displayArticles(articles) {
+      const container = document.getElementById('articlesContainer');
+      const selectedCategory = document.getElementById('categoryFilter').value;
+      container.innerHTML = '';
+
+      articles
+        .filter(a => !selectedCategory || a.category === selectedCategory)
+        .forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'article-card';
+          card.innerHTML = `
+            <img src="${article.image}" alt="Image" />
+            <h3>${article.title}</h3>
+            <p>${article.description}</p>
+            <small>${article.category}</small>
+            <button onclick="deleteArticle(${article.id})">🗑️ Supprimer</button>
+          `;
+          container.appendChild(card);
+        });
+    }
+
+    async function deleteArticle(id) {
+      const confirmDelete = confirm("Confirmer la suppression ?");
+      if (!confirmDelete) return;
+
+      await fetch(`/articles/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-key': 'congolais2025' }
+      });
+      fetchArticles();
+    }
+
+    document.getElementById('categoryFilter').addEventListener('change', fetchArticles);
+    fetchArticles();
+  </script>
+</body>
+</html>

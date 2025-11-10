@@ -119,7 +119,7 @@ button:hover {
   max-width: 800px;
 }
 
-.contact-btn, .support-btn, .ebook-btn, .contact-btn, .dashboard-btn {
+.contact-btn, .support-btn, .ebook-btn, .contact-btn {
   display: inline-block;
   margin-top: 15px;
   padding: 12px 24px;
@@ -130,7 +130,7 @@ button:hover {
   font-weight: bold;
 }
 
-.contact-btn:hover, .support-btn:hover, .ebook-btn:hover, .contact-btn, .dashboard-btn:hover {
+.contact-btn:hover, .support-btn:hover, .ebook-btn:hover, .contact-btn {
   background-color: #218838;
 }
 
@@ -200,7 +200,7 @@ footer {
   height: 100%;
   background: #1c2b36;
   color: white;
-  padding: 30px 20px;
+  padding: 40px 20px;
   overflow-y: auto;
   z-index: 1000;
   opacity: 0;
@@ -313,33 +313,9 @@ footer {
   margin-top: 20px;
 }
 
-#dashboard {
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  margin-top: 20px;
-  font-size: 0.95rem;
-}
-
-#dashboard ul {
-  list-style: none;
-  padding: 0;
-}
-
-#dashboard li {
-  margin-bottom: 15px;
-  background: white;
-  padding: 10px;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
 .ads {
   margin: 30px auto;
   max-width: 100%;
-  padding: 10px;
-  background: #f0f4f8;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   text-align: center;
 }
 
@@ -359,6 +335,9 @@ footer {
   .adsbygoogle {
     min-height: 80px;
   }
+}
+#propos{
+  padding-left: 20px;
 }
 
 

@@ -2,167 +2,119 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Publier un article – Le Congolais CD</title>
+  <title>Publier un article</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      margin: 0;
-      background: #f9f9f9;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    form {
-      max-width: 600px;
+      font-family: sans-serif;
+      max-width: 500px;
       margin: auto;
-      background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
     }
-
-    input, textarea, button {
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    input, textarea, select, button {
       width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 1em;
     }
-
-    textarea {
-      resize: vertical;
-    }
-
     button {
-      background-color: #0077cc;
+      background-color: #007bff;
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
     }
-
     button:hover {
-      background-color: #005fa3;
-    }
-
-    .note {
-      font-size: 0.9em;
-      color: #666;
-      text-align: center;
-    }
-
-    @media screen and (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      form {
-        padding: 15px;
-      }
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>📝 Publier un article</h1>
 
+  <h2>🔐 Accès admin</h2>
+  <script>
+    const adminKey = prompt("Entrez la clé admin pour publier");
+    if (adminKey !== "congolais2025") {
+      alert("⛔ Accès refusé");
+      window.location.href = "/";
+    }
+  </script>
+
+  <h2>📝 Publier un article</h2>
+   
+  <a href="dashboard.html">Accueil</a>
   <form id="articleForm">
-    <input type="text" id="title" placeholder="Titre de l’article" required>
-    <textarea id="description" placeholder="Description de l’article" rows="4" required></textarea>
-    <input type="url" id="url" placeholder="Lien vers l’article (ex: https://...)" required>
-    <input type="file" id="imageFile" accept="image/*">
-    <input id="key" name="key" placeholder="Clé admin" required>
-    <button type="submit">Publier</button>
-    <p class="note">📷 Vous pouvez soit coller un lien d’image, soit choisir une image locale.</p>
+    <input type="text" name="title" placeholder="Titre de l'article" required>
+    <textarea name="description" placeholder="Description" required></textarea>
+    <input type="text" name="url" placeholder="Lien (facultatif)">
+    
+    <select name="category" required>
+      <option value="Congo">Congo</option>
+      <option value="Politique">Politique</option>
+      <option value="Économie">Économie</option>
+      <option value="Culture">Culture</option>
+      <option value="Monde">Monde</option>
+    </select>
+
+    <input type="file" name="image" accept="image/*" required>
+    <button type="submit">📤 Publier</button>
   </form>
 
   <script>
+    const CLOUD_NAME = 'lecongolaish';
+    const UPLOAD_PRESET = 'lecongolaish';
+
     document.getElementById('articleForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const form = e.target;
+      const imageFile = form.image.files[0];
 
-      const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
-      const url = document.getElementById('url').value.trim();
-      const key = document.getElementById('key').value.trim();
-      const imageFile = document.getElementById('imageFile').files[0];
-
-      console.log("📱 Données capturées :", { title, description, url, key, imageFile });
-
-      if (!title || !description || !url || !key) {
-        alert("Veuillez remplir tous les champs obligatoires.");
+      if (!imageFile) {
+        alert("❌ Veuillez sélectionner une image");
         return;
       }
 
-      if (imageFile && imageFile.size > 2 * 1024 * 1024) {
-        alert("📷 Image trop lourde (max 2MB).");
+      // 🔼 Upload image vers Cloudinary
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      formData.append('upload_preset', UPLOAD_PRESET);
+
+      const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const cloudData = await cloudRes.json();
+      if (!cloudData.secure_url) {
+        alert("❌ Erreur lors de l’upload Cloudinary");
         return;
       }
 
-      const sendArticle = async (imageData) => {
-        const article = {
-          title,
-          description,
-          url,
-          image: imageData || "https://via.placeholder.com/300x180",
-          source: "Le Congolais CD",
-          key
-        };
-
-        console.log("📱 Données envoyées :", article);
-
-        try {
-          const res = await fetch(window.location.origin + '/articles', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(article)
-          });
-
-          if (res.ok) {
-            alert("✅ Article publié !");
-            document.getElementById('articleForm').reset();
-          } else {
-            const err = await res.json();
-            alert("❌ Erreur : " + (err.error || "Publication échouée."));
-          }
-        } catch (error) {
-          console.error("❌ Erreur JS :", error);
-          alert("❌ Impossible de publier l’article.");
-        }
+      // 📝 Publier l’article vers ton backend
+      const article = {
+        title: form.title.value,
+        description: form.description.value,
+        url: form.url.value,
+        category: form.category.value,
+        image: cloudData.secure_url
       };
 
-      if (imageFile) {
-        try {
-          const reader = new FileReader();
-          reader.onload = () => {
-            console.log("📷 Image encodée");
-            sendArticle(reader.result);
-          };
-          reader.onerror = () => {
-            console.error("❌ Erreur lecture image");
-            sendArticle(null);
-          };
-          reader.readAsDataURL(imageFile);
-        } catch (err) {
-          console.error("❌ Erreur FileReader :", err);
-          sendArticle(null);
-        }
+      const res = await fetch('/articles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': 'congolais2025'
+        },
+        body: JSON.stringify(article)
+      });
+
+      if (res.ok) {
+        alert("✅ Article publié !");
+        form.reset();
       } else {
-        sendArticle(null);
+        alert("❌ Erreur lors de la publication");
       }
     });
   </script>
+
 </body>
 </html>
+
