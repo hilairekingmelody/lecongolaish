@@ -41,9 +41,9 @@
   <h2>📝 Publier un article</h2>
    
   <a href="dashboard.html">Accueil</a>
-<input type="file" id="image" />
-<input type="text" id="title" />
-<textarea id="description"></textarea>
+<input type="text" id="title" placeholder="Titre de l’article" />
+<textarea id="description" placeholder="La description"></textarea>
+<input type="text" id="url" placeholder="Lien vers l’article" />
 <select id="category">
   <option value="Congo">Congo</option>
   <option value="Politique">Politique</option>
@@ -51,22 +51,25 @@
   <option value="Culture">Culture</option>
   <option value="Monde">Monde</option>
 </select>
+<input type="file" id="image" />
 <button onclick="publierArticle()">Publier</button>
 
 <script>
 async function publierArticle() {
   try {
+    // 1. Récupération des champs du formulaire
     const imageFile = document.querySelector('#image').files[0];
     const title = document.querySelector('#title').value.trim();
     const description = document.querySelector('#description').value.trim();
     const category = document.querySelector('#category').value;
+    const url = document.querySelector('#url').value.trim(); // 🔥 ici
 
-    if (!imageFile || !title || !description || !category) {
+    if (!imageFile || !title || !description || !category || !url) {
       alert("⛔ Tous les champs sont obligatoires !");
       return;
     }
 
-    // Upload vers Cloudinary
+    // 2. Upload vers Cloudinary
     const formData = new FormData();
     formData.append('file', imageFile);
     formData.append('upload_preset', 'lecongolaish');
@@ -86,9 +89,16 @@ async function publierArticle() {
 
     const imageUrl = cloudData.secure_url;
 
-    // Publication vers ton backend
-    const article = { title, description, category, image: imageUrl };
+    // 3. Construction de l’objet article avec tous les champs
+    const article = {
+      title,
+      description,
+      category,
+      image: imageUrl,
+      url // 🔥 ici aussi
+    };
 
+    // 4. Envoi vers ton backend
     const res = await fetch('/articles', {
       method: 'POST',
       headers: {
@@ -101,8 +111,9 @@ async function publierArticle() {
     if (res.ok) {
       alert("✅ Article publié avec succès !");
     } else {
-      alert("❌ Échec de la publication");
-      console.error(await res.text());
+      const errorText = await res.text();
+      alert("❌ Échec de la publication : " + errorText);
+      console.error(errorText);
     }
   } catch (err) {
     console.error("❌ Erreur générale :", err);

@@ -23,22 +23,29 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 📥 Publier un article
+app.use(express.json()); // 🔥 obligatoire pour parser JSON
+
 app.post('/articles', async (req, res) => {
-  const { title, description, url, image, category } = req.body;
+  const adminKey = req.headers['x-admin-key'];
+  if (adminKey !== 'congolais2025') return res.status(403).send("Accès refusé");
+
+  const { title, description, category, image } = req.body;
+  if (!title || !description || !category || !image) {
+    return res.status(400).send("Champs manquants");
+  }
 
   try {
-    const result = await pool.query(
-      'INSERT INTO articles (title, description, url, image, category) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [title, description, url, image, category || 'Congo']
-    );
-    res.json({ message: "✅ Article publié", article: result.rows[0] });
+  await pool.query(
+  `INSERT INTO articles (title, description, category, image, url) VALUES ($1, $2, $3, $4, $5)`,
+  [title, description, category, image, url]
+);
+    res.sendStatus(201);
   } catch (err) {
-    console.error("❌ Erreur PostgreSQL :", err);
-    res.status(500).json({ message: "Erreur serveur" });
+    console.error("❌ Erreur SQL :", err);
+    res.status(500).send("Erreur serveur");
   }
 });
 
